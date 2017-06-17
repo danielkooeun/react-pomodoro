@@ -1,6 +1,7 @@
 import React from 'react';
 import ClockControl from '../buttons/ClockControl';
 import * as def from '../Definitions';
+import TimeChange from '../buttons/TimeChange';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -79,8 +80,13 @@ class Home extends React.Component {
 		return (minute + ' : ' + second);
 	}
 
-	timeChange = () => {
-		
+	// function used to manage time change
+	handleChange = (event) => {
+		if (this.state.status === def.workTime || this.state.status === def.breakTime)
+			this.clockStartStop();
+		this.setState({
+			time: event.target.value
+		})
 	}
 
 	render() {
@@ -90,6 +96,11 @@ class Home extends React.Component {
 
 				{(this.state.mode === def.workMode) && <h1 className='workTimer'>{time}</h1>}
 				{(this.state.mode === def.breakMode) && <h1 className='breakTimer'>{time}</h1>}
+
+				<TimeChange
+					className='time-change-btn'
+					value={this.state.time}
+					onChange={this.handleChange} />
 
 				<ClockControl
 					status={this.state.status}
